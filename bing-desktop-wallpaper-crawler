@@ -1,0 +1,25 @@
+# -*- coding:utf-8 -*-
+'''
+batch file 
+python3
+'''
+__author__='mis'
+__version__='1.0'
+
+import os
+import re 
+import time
+import urllib.request
+if __name__=='__main__':
+    file_name=time.strftime("%y.%m.%d")
+    url='http://cn.bing.com/'
+    user_agent='Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36'
+    headers = {'User-Agent':user_agent}
+    request=urllib.request.Request(url=url,headers=headers)
+    response=urllib.request.urlopen(request)
+    reg = r"/az/hprichbg/rb/.*?.jpg"
+    pattern=re.compile(reg)
+    pic_addr=re.findall(pattern,response.read().decode('utf-8'))[0]
+    pic_content=urllib.request.urlopen(url="http://cn.bing.com"+pic_addr).read()
+    with open(file_name+'.jpg','wb') as f:
+        f.write(pic_content)
